@@ -77,16 +77,15 @@ namespace Fight
         }
 
         public virtual void Update() {
+
         }
 
 
         public void Move2(Vector2Int v2) {
             if (FindObjectOfType<MapManager>().GetUnit(FindObjectOfType<MapManager>().Pos2ID(v2)).isCaptured)
                 return;
-            FindObjectOfType<MapManager>().GetUnit(FindObjectOfType<MapManager>().Pos2ID(pos)).isCaptured = false;
             pos = v2;
             transform.position = FindObjectOfType<MapManager>().GetRenderPos(v2);
-            FindObjectOfType<MapManager>().GetUnit(FindObjectOfType<MapManager>().Pos2ID(v2)).isCaptured = true;
         }
 
 
@@ -96,11 +95,11 @@ namespace Fight
 
 
         public void SetTurn() {
-            spriteRenderer.color = Color.red;            
+            
         }
 
         public void SetTurnEnd() {
-            spriteRenderer.color = Color.white;
+
         }
     }
 }

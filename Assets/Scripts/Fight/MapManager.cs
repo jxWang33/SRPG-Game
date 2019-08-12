@@ -49,7 +49,7 @@ namespace Fight
         public Vector2 GetRenderPos(Vector2Int pos) {
             return oriPoint + new Vector2(pos.x * unitSize.x + pos.y * unitSize.z, pos.y * unitSize.y);
         }
-        
+
         public MapUnit GetUnit(int id) {
             if (id < 0 || id >= maps.Count)
                 Debug.LogWarning("Invalid MapUnit ID");
@@ -62,11 +62,23 @@ namespace Fight
             return null;
         }
 
-        public void SetMoveMatrix(Actor ac) {
+        public MapUnit GetUnit(Vector2Int pos) {
+            return GetUnit(Pos2ID(pos));
+        }
+
+        public void SwitchMoveMatrix(Actor ac) {
             List<Vector2Int> tempList = ac.GetMovePoses();
             foreach (Vector2Int i in tempList) {
                 MapUnit tempUnit = GetUnit(Pos2ID(i));
-                tempUnit.SetMoveMatrix();
+                tempUnit.SwitchInsideMove();
+            }
+        }
+
+        public void CancelMoveMatrix(Actor ac) {
+            List<Vector2Int> tempList = ac.GetMovePoses();
+            foreach (Vector2Int i in tempList) {
+                MapUnit tempUnit = GetUnit(Pos2ID(i));
+                tempUnit.insideMove = false;
             }
         }
 
@@ -96,14 +108,29 @@ namespace Fight
 
         protected override void ResponseEvent(Event e) {
             switch (e.kind) {
+                case EventKind.ActorSetUp: {
+                        GetUnit(e.GetParam<Vector2Int>()).isCaptured = true;
+                        break;
+                    }
+                case EventKind.EndTurn: {
+                        CancelMoveMatrix(e.GetParam<Actor>());
+                        break;
+                    }
                 case EventKind.MouseAbove: {
+                        foreach (MapUnit i in maps)
+                            i.CancelConsider();
                         GetUnit(e.GetParam<int>()).SetInConsider();
                         break;
                     }
                 case EventKind.MouseSelect: {
-                        if (FindObjectOfType<TurnHandler>().Performer && GetUnit(e.GetParam<int>()).insideMove) {
-                            FindObjectOfType<MapManager>().SetMoveMatrix(FindObjectOfType<TurnHandler>().Performer);
-                            FindObjectOfType<TurnHandler>().Performer.Move2(GetUnit(e.GetParam<int>()).pos);
+                        MapUnit tempUnit = GetUnit(e.GetParam<int>());
+                        if (FindObjectOfType<TurnHandler>().Performer && tempUnit.insideMove && !tempUnit.isCaptured) {
+                            SwitchMoveMatrix(FindObjectOfType<TurnHandler>().Performer);
+
+                            GetUnit(FindObjectOfType<TurnHandler>().Performer.pos).isCaptured = false;
+                            FindObjectOfType<TurnHandler>().Performer.Move2(tempUnit.pos);
+                            tempUnit.isCaptured = true;
+
                             FindObjectOfType<ActorManager>().AddEvent(new Event(EventKind.EndTurn, FindObjectOfType<TurnHandler>().Performer.ID));
                         }
                         break;

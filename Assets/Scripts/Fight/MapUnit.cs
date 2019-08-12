@@ -26,44 +26,17 @@ namespace Fight
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
-        void Update() {
-            StateReset();
-        }        
-
-
-        private void StateReset() {
-
-            if (insideMove) {
-                if (isCaptured)
-                    spriteRenderer.color = Color.red;
-                else
-                    spriteRenderer.color = Color.green;
-            }
-            else
-                spriteRenderer.color = Color.white;
-
-            if(isConsider)
-                spriteRenderer.color = Color.yellow;
-            isConsider = false;
-
-        }
 
         public void SetInConsider() {
             isConsider = true;
         }
 
-        public void SetMoveMatrix() {
-            if (!insideMove) {
-                insideMove = true;
-                if (isCaptured)
-                    spriteRenderer.color = Color.red;
-                else
-                    spriteRenderer.color = Color.green;
-            }
-            else {
-                insideMove = false;
-                spriteRenderer.color = Color.white;
-            }
+        public void CancelConsider() {
+            isConsider = false;
+        }
+
+        public void SwitchInsideMove() {
+            insideMove = !insideMove;
         }        
     }
 }

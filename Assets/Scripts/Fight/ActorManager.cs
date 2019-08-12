@@ -21,6 +21,7 @@ namespace Fight {
             int tempID = 0;
             foreach (Actor i in actorList) {
                 i.SetUp(tempID++);
+                FindObjectOfType<MapManager>().AddEvent(new Event(EventKind.ActorSetUp, i.pos));
             }
         }
 
@@ -45,11 +46,12 @@ namespace Fight {
             switch (e.kind) {
                 case EventKind.EndTurn: {
                         GetActor(e.GetParam<int>()).SetTurnEnd();
-                        FindObjectOfType<InputHandler>().AddEvent(new Event(EventKind.EndTurn, null));
+                        FindObjectOfType<MapManager>().AddEvent(new Event(EventKind.EndTurn, GetActor(e.GetParam<int>())));
+                        FindObjectOfType<TurnHandler>().AddEvent(new Event(EventKind.EndTurn, null));
                         break;
                     }
                 case EventKind.MoveReady: {
-                        FindObjectOfType<MapManager>().SetMoveMatrix(GetActor(e.GetParam<int>()));
+                        FindObjectOfType<MapManager>().SwitchMoveMatrix(GetActor(e.GetParam<int>()));
                         break;
                     }
                 default: {

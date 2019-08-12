@@ -13,10 +13,11 @@ namespace Fight
             }
         }
 
+        [ReadOnly]
         [SerializeField]
         private int performerID = -1;//表演者id，-1为空
         private ActorManager actorManager;
-        [SerializeField]
+
         private List<float> actorTurnValues;
         private List<float> actorSkillValues;
 
@@ -64,7 +65,16 @@ namespace Fight
 
 
         protected override void ResponseEvent(Event e) {
-            throw new System.NotImplementedException();
+            switch (e.kind) {
+                case EventKind.EndTurn: {
+                        SetNewTurn();
+                        break;
+                    }
+                default: {
+                        Debug.LogWarning("Unknow Event Type");
+                        break;
+                    }
+            }
         }
     }
 }

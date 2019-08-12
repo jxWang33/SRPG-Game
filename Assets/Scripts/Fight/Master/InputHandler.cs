@@ -66,10 +66,6 @@ namespace Fight
 
         protected override void ResponseEvent(Event e) {
             switch (e.kind) {
-                case EventKind.EndTurn: {
-                        turnHandler.SetNewTurn();
-                        break;
-                    }
                 default: {
                         Debug.LogWarning("Unknow Event Type");
                         break;

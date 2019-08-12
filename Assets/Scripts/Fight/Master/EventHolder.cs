@@ -11,6 +11,7 @@ namespace Fight
         MoveLock,       
         MoveReady,      
         EndTurn,        //int: ID
+        ActorSetUp,
     };
 
     public struct Event
