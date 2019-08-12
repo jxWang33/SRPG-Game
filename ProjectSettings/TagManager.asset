@@ -13,7 +13,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - MapUnit
   - 
   - 
   - 
@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Back
+    uniqueID: 3198261107
+    locked: 0
+  - name: Map
+    uniqueID: 790462501
+    locked: 0
+  - name: Actor
+    uniqueID: 2579849489
+    locked: 0
+  - name: Front
+    uniqueID: 3488701523
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

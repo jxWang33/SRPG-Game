@@ -8,7 +8,6 @@ public class GameManager
     public const KeyCode FUNC_KEY = KeyCode.Space;
 
     public const string FIGHT_SCENE = "FightScene";
-    public const string FIGHT_PREFAB_PATH = "Prefabs/Fight/";
 
     public static void Init() {
         if (GAME_INITED)
